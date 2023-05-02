@@ -2,23 +2,66 @@
 class Draw {
 
 	function void draw_player(int x, int y) {
-		//do Screen.clearScreen();
+
 		do Screen.setColor(true);
-		/**
-		do Screen.drawPixel(x + 1, y);
-		do Screen.drawPixel(x + 2, y);
-		do Screen.drawPixel(x + 3, y);
-		do Screen.drawPixel(x + 4, y);
-		do Screen.drawPixel(x, y);
-		do Screen.drawPixel(x - 1, y);
-		do Screen.drawPixel(x - 2, y);
-		do Screen.drawPixel(x - 3, y);
-		do Screen.drawPixel(x - 4, y);
-		*/
-		
 		do Screen.drawCircle(x, y, 10);
 		
 		return;
 	}
+	
+	function void draw_platform(int x, int y) {
+		
+		do Screen.setColor(true);
+		do Screen.drawRectangle((x - 10), (y - 2), (x + 10), (y + 2));
+		
+		return;
+	}
     
+	function void draw_score(int val) {
+		var String string_value, char_string;
+		var int len, i, digit;
+		var char current;
+		
+		let string_value = String.new(10);
+		let char_string = String.new(5);
+		let i = 0;
+		do char_string.setInt(0);
+		do string_value.setInt(val);
+		let len = string_value.length();
+		
+		
+		while(i < len) {
+			let current = string_value.charAt(i);
+			do char_string.setCharAt(0, current);
+			let digit = char_string.intValue();
+			do Draw.draw_digit(digit);
+			let i = i + 1;
+		}
+		
+		do char_string.dispose();
+		do string_value.dispose();
+		return;
+	}
+	
+	function void draw_digit(int dig) {
+		
+		if(dig = 0) {
+			do Screen.setColor(true);
+			do Screen.drawRectangle(5, 5, 15, 30);
+			
+			do Screen.setColor(false);
+			do Screen.drawRectangle(7, 7, 13, 28);
+		}
+		
+		// to continue until 9
+		if(dig = 1) {
+			do Screen.setColor(true);
+			do Screen.drawRectangle(5, 5, 15, 30);
+			
+			do Screen.setColor(false);
+			do Screen.drawRectangle(10, 5, 10, 30);
+		}
+		 
+		return;
+	}
 }

@@ -134,8 +134,6 @@ pop pointer 0
 push pointer 0
 call Player.movement 1
 pop temp 0
-call Screen.clearScreen 0
-pop temp 0
 push pointer 0
 call Player.render 1
 pop temp 0
@@ -150,4 +148,10 @@ function Player.y 0
 push argument 0
 pop pointer 0
 push this 1
+return
+function Player.can_hit 0
+push argument 0
+pop pointer 0
+push this 4
+not
 return

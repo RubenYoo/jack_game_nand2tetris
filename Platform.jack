@@ -3,5 +3,29 @@ class Platform {
 	field int xPos;
 	field int yPos;
 	
+	constructor Platform new(int x, int y) {
+		let xPos = x;
+		let yPos = y;
+		return this;
+	}
 	
+	
+	method void render() {
+		do Draw.draw_platform(xPos, yPos);
+
+		return;
+	}
+	
+	method void dispose() {
+		do Memory.deAlloc(this);
+		return;
+    }
+	
+	method int x() {
+		return xPos;
+	}
+
+	method int y() {
+		return yPos;
+	}
 }

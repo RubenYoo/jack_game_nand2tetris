@@ -71,7 +71,6 @@ class Player {
 
 	method void update() {
 		do movement();
-		do Screen.clearScreen();
 		do render();
 		return;
 	}
@@ -83,5 +82,8 @@ class Player {
 	method int y() {
 		return yPos;
 	}
-
+	
+	method boolean can_hit() {
+		return ~on_jump;
+	}
 }

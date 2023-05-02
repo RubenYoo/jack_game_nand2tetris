@@ -4,12 +4,26 @@ class Game {
 	field Player player;
 	field char key;
 	field boolean exit;
+	field Array platforms;
+	field int length_platforms;
+	field Score score;
 	
 
 	constructor Game new() {
 		let player = Player.new(256, 128);
 		let key = 0;
+		let length_platforms = 5;
+		let platforms = Array.new(length_platforms);
 		let exit = false;
+		let score = Score.new();
+		
+		// need to randomize positions
+		let platforms[0] = Platform.new(350, 200);
+		let platforms[1] = Platform.new(300, 250);
+		let platforms[2] = Platform.new(275, 180);
+		let platforms[3] = Platform.new(400, 139);
+		let platforms[4] = Platform.new(100, 170);
+		
 		return this;
 	}
 	
@@ -29,17 +43,75 @@ class Game {
 
 		return;
    }
-   
-	method boolean run() {
-		do player.render();
+	method void advance() {
+		var int i;
+		var Platform current;
+		let i = 0;
+		
+		do Screen.clearScreen();
+		
+		do player.update();
+		do score.render();
+		
+		while(i < length_platforms) {
+			
+			let current = platforms[i];
+			do current.render();
+			let i = i + 1;
+		}
+		
+		return;
+	}
+	
+	method void check_landing() {
+		var int i, xPlat, yPlat, xPlay, yPlay;
+		var boolean can_land;
+		var Platform current;
+		
+		let i = 0;
+		let can_land = player.can_hit();
+		
+		if(~can_land) {
+			return;
+		}
+		
+		while(i < length_platforms) {
+			
+			let current = platforms[i];
+			let xPlay = player.x();
+			let yPlay = player.y();
+			let xPlat = current.x();
+			let yPlat = current.y();
+			
+			// need to check if the player land on the platform
+			if ((yPlay + 10) = (yPlat - 2)) {
+			
+			}
+			
+			let i = i + 1;
+		}
+		
+		return;
+	}
+	
+	method boolean run() {		
 		
 		while (~exit) {
 			do handle_input();
-			do player.update();
+			do advance();
+			do check_landing();
 			do Sys.wait(100);
 			
 		}
 		
 		return true;
 	}
+	
+	method void dispose() {
+		do player.dispose();
+		do platforms.dispose();
+		do score.dispose();
+		do Memory.deAlloc(this);
+		return;
+    }
 }

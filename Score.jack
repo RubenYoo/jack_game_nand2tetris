@@ -6,5 +6,15 @@ class Score {
 		let value = 0;
 		return this;
 	}
-
+	
+	method void dispose() {
+		do Memory.deAlloc(this);
+		return;
+    }
+	
+	method void render() {
+		do Draw.draw_score(value);
+		return;
+		
+	}
 }

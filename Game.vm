@@ -1,5 +1,5 @@
 function Game.new 0
-push constant 3
+push constant 6
 call Memory.alloc 1
 pop pointer 0
 push constant 256
@@ -8,8 +8,65 @@ call Player.new 2
 pop this 0
 push constant 0
 pop this 1
+push constant 5
+pop this 4
+push this 4
+call Array.new 1
+pop this 3
 push constant 0
 pop this 2
+call Score.new 0
+pop this 5
+push constant 0
+push this 3
+add
+push constant 350
+push constant 200
+call Platform.new 2
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 1
+push this 3
+add
+push constant 300
+push constant 250
+call Platform.new 2
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 2
+push this 3
+add
+push constant 275
+push constant 180
+call Platform.new 2
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 3
+push this 3
+add
+push constant 400
+push constant 139
+call Platform.new 2
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 4
+push this 3
+add
+push constant 100
+push constant 170
+call Platform.new 2
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
 push pointer 0
 return
 function Game.handle_input 0
@@ -39,12 +96,104 @@ pop temp 0
 label IF_FALSE1
 push constant 0
 return
+function Game.advance 2
+push argument 0
+pop pointer 0
+push constant 0
+pop local 0
+call Screen.clearScreen 0
+pop temp 0
+push this 0
+call Player.update 1
+pop temp 0
+push this 5
+call Score.render 1
+pop temp 0
+label WHILE_EXP0
+push local 0
+push this 4
+lt
+not
+if-goto WHILE_END0
+push local 0
+push this 3
+add
+pop pointer 1
+push that 0
+pop local 1
+push local 1
+call Platform.render 1
+pop temp 0
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function Game.check_landing 7
+push argument 0
+pop pointer 0
+push constant 0
+pop local 0
+push this 0
+call Player.can_hit 1
+pop local 5
+push local 5
+not
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+return
+label IF_FALSE0
+label WHILE_EXP0
+push local 0
+push this 4
+lt
+not
+if-goto WHILE_END0
+push local 0
+push this 3
+add
+pop pointer 1
+push that 0
+pop local 6
+push this 0
+call Player.x 1
+pop local 3
+push this 0
+call Player.y 1
+pop local 4
+push local 6
+call Platform.x 1
+pop local 1
+push local 6
+call Platform.y 1
+pop local 2
+push local 4
+push constant 10
+add
+push local 2
+push constant 2
+sub
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+label IF_FALSE1
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
 function Game.run 0
 push argument 0
 pop pointer 0
-push this 0
-call Player.render 1
-pop temp 0
 label WHILE_EXP0
 push this 2
 not
@@ -53,8 +202,11 @@ if-goto WHILE_END0
 push pointer 0
 call Game.handle_input 1
 pop temp 0
-push this 0
-call Player.update 1
+push pointer 0
+call Game.advance 1
+pop temp 0
+push pointer 0
+call Game.check_landing 1
 pop temp 0
 push constant 100
 call Sys.wait 1
@@ -63,4 +215,21 @@ goto WHILE_EXP0
 label WHILE_END0
 push constant 0
 not
+return
+function Game.dispose 0
+push argument 0
+pop pointer 0
+push this 0
+call Player.dispose 1
+pop temp 0
+push this 3
+call Array.dispose 1
+pop temp 0
+push this 5
+call Score.dispose 1
+pop temp 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
 return
