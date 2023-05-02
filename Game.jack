@@ -1,0 +1,45 @@
+
+class Game {
+	
+	field Player player;
+	field char key;
+	field boolean exit;
+	
+
+	constructor Game new() {
+		let player = Player.new(256, 128);
+		let key = 0;
+		let exit = false;
+		return this;
+	}
+	
+	
+	
+	method void handle_input() {
+		let key = Keyboard.keyPressed();
+		
+		// left arrow
+		if (key = 130) { 
+			do player.move_left();
+		}
+		// right arrow
+		if (key = 132) { 
+			do player.move_right();
+		}
+
+		return;
+   }
+   
+	method boolean run() {
+		do player.render();
+		
+		while (~exit) {
+			do handle_input();
+			do player.update();
+			do Sys.wait(100);
+			
+		}
+		
+		return true;
+	}
+}

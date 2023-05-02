@@ -1,0 +1,87 @@
+
+class Player {
+	field int xPos;
+	field int yPos;
+	field int yVel;
+	field boolean gravity; 
+	field boolean on_jump;
+
+	constructor Player new(int x, int y) {
+		let xPos = x;
+		let yPos = y;
+		let yVel = 10;
+		let gravity = true;
+		let on_jump = false;
+		return this;
+    }
+
+	method void dispose() {
+		do Memory.deAlloc(this);
+		return;
+    }
+
+	method void move_left() {
+		if(xPos > 0) {
+			let xPos = xPos - 5;
+		}
+		return;
+    }
+	
+	method void move_right() {
+		if(xPos < 512) {
+			let xPos = xPos + 5;
+		}
+		return;
+    }
+	
+	method void jump() {
+		if(xPos < 512) {
+			let xPos = xPos + 1;
+		}
+		return;
+    }
+
+	method void movement() {
+
+		if (~on_jump) {
+			if (yPos < (256 - 10 - yVel)) {
+               let yPos = yPos + yVel;
+            }
+			else {
+				let on_jump = true;
+			}
+        } 
+		else {
+			if (yPos > 128) {
+               let yPos = yPos - yVel;
+            }
+			else {
+				let on_jump = false;
+			}
+		}
+		
+		return;
+   }
+	
+	method void render() {
+		do Draw.draw_player(xPos, yPos);
+
+		return;
+	}
+
+	method void update() {
+		do movement();
+		do Screen.clearScreen();
+		do render();
+		return;
+	}
+
+	method int x() {
+		return xPos;
+	}
+
+	method int y() {
+		return yPos;
+	}
+
+}

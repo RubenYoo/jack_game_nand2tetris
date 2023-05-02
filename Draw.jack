@@ -1,0 +1,24 @@
+
+class Draw {
+
+	function void draw_player(int x, int y) {
+		//do Screen.clearScreen();
+		do Screen.setColor(true);
+		/**
+		do Screen.drawPixel(x + 1, y);
+		do Screen.drawPixel(x + 2, y);
+		do Screen.drawPixel(x + 3, y);
+		do Screen.drawPixel(x + 4, y);
+		do Screen.drawPixel(x, y);
+		do Screen.drawPixel(x - 1, y);
+		do Screen.drawPixel(x - 2, y);
+		do Screen.drawPixel(x - 3, y);
+		do Screen.drawPixel(x - 4, y);
+		*/
+		
+		do Screen.drawCircle(x, y, 10);
+		
+		return;
+	}
+    
+}

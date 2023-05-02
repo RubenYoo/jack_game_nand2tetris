@@ -1,0 +1,7 @@
+
+class Platform {
+	field int xPos;
+	field int yPos;
+	
+	
+}
