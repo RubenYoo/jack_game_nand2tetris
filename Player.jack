@@ -5,6 +5,7 @@ class Player {
 	field int yVel;
 	field boolean gravity; 
 	field boolean on_jump;
+	field boolean touched;
 
 	constructor Player new(int x, int y) {
 		let xPos = x;
@@ -12,6 +13,7 @@ class Player {
 		let yVel = 10;
 		let gravity = true;
 		let on_jump = false;
+		let touched = false;
 		return this;
     }
 
@@ -42,8 +44,13 @@ class Player {
     }
 
 	method void movement() {
+		//check if should jump on
+		if(touched){
+			let on_jump = ~on_jump;
+			let touched = false;
+		}
 
-		if (~on_jump) {
+		if (~on_jump ) {
 			if (yPos < (256 - 10 - yVel)) {
                let yPos = yPos + yVel;
             }
@@ -52,7 +59,7 @@ class Player {
 			}
         } 
 		else {
-			if (yPos > 128) {
+			if (yPos > 100) {
                let yPos = yPos - yVel;
             }
 			else {
@@ -85,5 +92,9 @@ class Player {
 	
 	method boolean can_hit() {
 		return ~on_jump;
+	}
+	method void touched() {
+		let touched = true;
+		return;
 	}
 }

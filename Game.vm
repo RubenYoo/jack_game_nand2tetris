@@ -1,5 +1,5 @@
 function Game.new 0
-push constant 6
+push constant 7
 call Memory.alloc 1
 pop pointer 0
 push constant 256
@@ -17,6 +17,9 @@ push constant 0
 pop this 2
 call Score.new 0
 pop this 5
+push constant 0
+not
+pop this 6
 call Draw.init 0
 pop temp 0
 push constant 0
@@ -70,6 +73,51 @@ pop pointer 1
 push temp 0
 pop that 0
 push pointer 0
+return
+function Game.create_platforms 1
+push argument 0
+pop pointer 0
+push constant 7
+push constant 0
+call Random.randRange 2
+pop local 0
+push local 0
+push constant 0
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 5
+pop local 0
+label IF_FALSE0
+label WHILE_EXP0
+push local 0
+push constant 1
+neg
+gt
+not
+if-goto WHILE_END0
+push local 0
+push this 3
+add
+push constant 250
+push constant 11
+call Random.randRange 2
+push constant 250
+push constant 101
+call Random.randRange 2
+call Platform.new 2
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 0
+push constant 1
+sub
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
 return
 function Game.handle_input 0
 push argument 0
@@ -142,14 +190,6 @@ pop local 0
 push this 0
 call Player.can_hit 1
 pop local 5
-push local 5
-not
-if-goto IF_TRUE0
-goto IF_FALSE0
-label IF_TRUE0
-push constant 0
-return
-label IF_FALSE0
 label WHILE_EXP0
 push local 0
 push this 4
@@ -174,8 +214,13 @@ pop local 1
 push local 6
 call Platform.y 1
 pop local 2
+push local 5
+not
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
 push local 4
-push constant 10
+push constant 20
 add
 push local 2
 push constant 2
@@ -185,7 +230,7 @@ if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
 push local 3
-push constant 10
+push constant 8
 sub
 push local 1
 lt
@@ -193,19 +238,54 @@ if-goto IF_TRUE2
 goto IF_FALSE2
 label IF_TRUE2
 push local 3
-push constant 10
+push constant 8
 add
 push local 1
 gt
 if-goto IF_TRUE3
 goto IF_FALSE3
 label IF_TRUE3
-push this 5
-call Score.increment_score 1
-pop temp 0
+push constant 0
+return
 label IF_FALSE3
 label IF_FALSE2
 label IF_FALSE1
+label IF_FALSE0
+push local 4
+push constant 10
+add
+push local 2
+push constant 2
+sub
+eq
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push local 3
+push constant 8
+sub
+push local 1
+lt
+if-goto IF_TRUE5
+goto IF_FALSE5
+label IF_TRUE5
+push local 3
+push constant 8
+add
+push local 1
+gt
+if-goto IF_TRUE6
+goto IF_FALSE6
+label IF_TRUE6
+push this 0
+call Player.touched 1
+pop temp 0
+push this 5
+call Score.increment_score 1
+pop temp 0
+label IF_FALSE6
+label IF_FALSE5
+label IF_FALSE4
 push local 0
 push constant 1
 add
@@ -213,6 +293,7 @@ pop local 0
 goto WHILE_EXP0
 label WHILE_END0
 push constant 0
+not
 return
 function Game.run 0
 push argument 0
@@ -230,7 +311,15 @@ call Game.advance 1
 pop temp 0
 push pointer 0
 call Game.check_landing 1
-pop temp 0
+pop this 6
+push this 6
+not
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+return
+label IF_FALSE0
 push constant 100
 call Sys.wait 1
 pop temp 0

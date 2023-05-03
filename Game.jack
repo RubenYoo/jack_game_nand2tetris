@@ -7,6 +7,7 @@ class Game {
 	field Array platforms;
 	field int length_platforms;
 	field Score score;
+	field boolean game_on; 
 	
 
 	constructor Game new() {
@@ -16,6 +17,7 @@ class Game {
 		let platforms = Array.new(length_platforms);
 		let exit = false;
 		let score = Score.new();
+		let game_on = true;
 		do Draw.init();
 		
 		// need to randomize positions
@@ -28,6 +30,20 @@ class Game {
 		return this;
 	}
 	
+	
+	method void create_platforms(){
+		var int randvar;
+		let randvar = Random.randRange(7,0);
+		if (randvar = 0){
+			let randvar = 5;
+		} 
+		while (randvar > -1){
+			let platforms[randvar] = Platform.new(Random.randRange(250,11), Random.randRange(250,101));
+			let randvar = randvar-1;
+		}
+		return;
+	
+	}
 	
 	
 	method void handle_input() {
@@ -64,7 +80,7 @@ class Game {
 		return;
 	}
 	
-	method void check_landing() {
+	method boolean check_landing() {
 		var int i, xPlat, yPlat, xPlay, yPlay;
 		var boolean can_land;
 		var Platform current;
@@ -72,9 +88,9 @@ class Game {
 		let i = 0;
 		let can_land = player.can_hit();
 		
-		if(~can_land) {
+		/*if(~can_land) {
 			return;
-		}
+		}*/
 		
 		while(i < length_platforms) {
 			
@@ -84,12 +100,17 @@ class Game {
 			let xPlat = current.x();
 			let yPlat = current.y();
 			
-			// need to check if the player landed on the platform
-			// this is not working good currently
+			//  check if the player landed on the platform
+			// this is working great currently
 			if ((yPlay + 10) = (yPlat - 2)) {
-				if ((xPlay - 10) < (xPlat)) {
-					if ((xPlay + 10) > (xPlat)) {
+				if ((xPlay - 8) < (xPlat)) {
+					if ((xPlay + 8) > (xPlat)) {
+						if(~can_land){
+							return false;
+						}
+						do player.touched();
 						do score.increment_score();
+						
 					}
 				}
 	
@@ -98,7 +119,7 @@ class Game {
 			let i = i + 1;
 		}
 		
-		return;
+		return true;
 	}
 	
 	method boolean run() {		
@@ -106,7 +127,10 @@ class Game {
 		while (~exit) {
 			do handle_input();
 			do advance();
-			do check_landing();
+			let game_on = check_landing();
+			if (~game_on){
+				return false;
+			}
 			do Sys.wait(100);
 			
 		}
