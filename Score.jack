@@ -13,8 +13,14 @@ class Score {
     }
 	
 	method void render() {
-		do Draw.draw_score(value);
+		
+		do Draw.show_score(value);
 		return;
 		
+	}
+	
+	method void increment_score() {
+		let value = value + 1;
+		return;
 	}
 }

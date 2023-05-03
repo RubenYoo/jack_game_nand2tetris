@@ -16,6 +16,7 @@ class Game {
 		let platforms = Array.new(length_platforms);
 		let exit = false;
 		let score = Score.new();
+		do Draw.init();
 		
 		// need to randomize positions
 		let platforms[0] = Platform.new(350, 200);
@@ -83,9 +84,10 @@ class Game {
 			let xPlat = current.x();
 			let yPlat = current.y();
 			
-			// need to check if the player land on the platform
+			// need to check if the player landed on the platform
+			// this is not working good currently
 			if ((yPlay + 10) = (yPlat - 2)) {
-			
+				do score.increment_score();
 			}
 			
 			let i = i + 1;

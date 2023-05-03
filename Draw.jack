@@ -1,6 +1,7 @@
 
 class Draw {
-
+	static int ir,ic;
+	
 	function void draw_player(int x, int y) {
 
 		do Screen.setColor(true);
@@ -17,51 +18,35 @@ class Draw {
 		return;
 	}
     
-	function void draw_score(int val) {
-		var String string_value, char_string;
-		var int len, i, digit;
-		var char current;
-		
-		let string_value = String.new(10);
-		let char_string = String.new(5);
-		let i = 0;
-		do char_string.setInt(0);
-		do string_value.setInt(val);
-		let len = string_value.length();
-		
-		
-		while(i < len) {
-			let current = string_value.charAt(i);
-			do char_string.setCharAt(0, current);
-			let digit = char_string.intValue();
-			do Draw.draw_digit(digit);
-			let i = i + 1;
-		}
-		
-		do char_string.dispose();
-		do string_value.dispose();
+	function void init() {
+		let ir = 1;
+		let ic = 7;
+		return;
+	}
+
+	function void erase_score() {
+		var String s;
+		do Output.moveCursor(ir,ic);
+		let s = "     ";
+		do Output.printString(s);
+		do s.dispose();
 		return;
 	}
 	
-	function void draw_digit(int dig) {
-		
-		if(dig = 0) {
-			do Screen.setColor(true);
-			do Screen.drawRectangle(5, 5, 15, 30);
-			
-			do Screen.setColor(false);
-			do Screen.drawRectangle(7, 7, 13, 28);
-		}
-		
-		// to continue until 9
-		if(dig = 1) {
-			do Screen.setColor(true);
-			do Screen.drawRectangle(5, 5, 15, 30);
-			
-			do Screen.setColor(false);
-			do Screen.drawRectangle(10, 5, 10, 30);
-		}
-		 
+	function void draw_score() {
+		var String msg;
+		let msg = "Score: ";
+		do Output.moveCursor(1,1);
+		do Output.printString(msg);
+		do msg.dispose();
+		return;
+	}
+
+	function void show_score(int val) {
+		do Draw.erase_score();
+		do Output.moveCursor(ir,ic);
+		do Draw.draw_score();
+		do Output.printInt(val);
 		return;
 	}
 }

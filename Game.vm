@@ -17,6 +17,8 @@ push constant 0
 pop this 2
 call Score.new 0
 pop this 5
+call Draw.init 0
+pop temp 0
 push constant 0
 push this 3
 add
@@ -182,6 +184,9 @@ eq
 if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
+push this 5
+call Score.increment_score 1
+pop temp 0
 label IF_FALSE1
 push local 0
 push constant 1
