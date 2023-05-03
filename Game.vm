@@ -184,9 +184,27 @@ eq
 if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
+push local 3
+push constant 10
+sub
+push local 1
+lt
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push local 3
+push constant 10
+add
+push local 1
+gt
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
 push this 5
 call Score.increment_score 1
 pop temp 0
+label IF_FALSE3
+label IF_FALSE2
 label IF_FALSE1
 push local 0
 push constant 1

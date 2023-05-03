@@ -87,7 +87,12 @@ class Game {
 			// need to check if the player landed on the platform
 			// this is not working good currently
 			if ((yPlay + 10) = (yPlat - 2)) {
-				do score.increment_score();
+				if ((xPlay - 10) < (xPlat)) {
+					if ((xPlay + 10) > (xPlat)) {
+						do score.increment_score();
+					}
+				}
+	
 			}
 			
 			let i = i + 1;
