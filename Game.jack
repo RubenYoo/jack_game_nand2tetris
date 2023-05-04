@@ -7,40 +7,53 @@ class Game {
 	field Array platforms;
 	field int length_platforms;
 	field Score score;
-	field boolean game_on; 
+	field int r1, r2;
 	
 
 	constructor Game new() {
-		let player = Player.new(256, 128);
+		let player = Player.new(256, 40);
 		let key = 0;
 		let length_platforms = 5;
 		let platforms = Array.new(length_platforms);
 		let exit = false;
 		let score = Score.new();
-		let game_on = true;
+		do Random.setSeed(3);
 		do Draw.init();
 		
 		// need to randomize positions
-		let platforms[0] = Platform.new(350, 200);
-		let platforms[1] = Platform.new(300, 250);
-		let platforms[2] = Platform.new(275, 180);
-		let platforms[3] = Platform.new(400, 139);
-		let platforms[4] = Platform.new(100, 170);
+		// only platform that applies (Y % 10 == 0) !!! (if not the check_landing is not working, because we increasing the
+		// yPos of the player by 10 every time).
+		let platforms[0] = Platform.new(300, 250);
+		let platforms[1] = Platform.new(350, 200);
+		let platforms[2] = Platform.new(270, 180);
+		let platforms[3] = Platform.new(100, 170);
+		let platforms[4] = Platform.new(400, 130);
 		
 		return this;
 	}
 	
 	
 	method void create_platforms(){
-		var int randvar;
-		let randvar = Random.randRange(7,0);
-		if (randvar = 0){
-			let randvar = 5;
-		} 
-		while (randvar > -1){
-			let platforms[randvar] = Platform.new(Random.randRange(250,11), Random.randRange(250,101));
-			let randvar = randvar-1;
+		var int rand1, rand2, i;
+		var Platform current;
+		
+		let i = 0;
+				
+		while(i < length_platforms) {
+		
+			let rand1 = (Random.randRange(300) + 70);
+			let rand2 = ((Random.randRange(24) + 1) * 10);
+			
+			let r1 = rand1;
+			let r2 = rand2;
+			
+			let current = platforms[i];
+			do current.dispose();
+			
+			let platforms[i] = Platform.new(rand1, rand2);
+			let i = i + 1;
 		}
+
 		return;
 	
 	}
@@ -57,7 +70,7 @@ class Game {
 		if (key = 132) { 
 			do player.move_right();
 		}
-
+		
 		return;
    }
 	method void advance() {
@@ -66,9 +79,11 @@ class Game {
 		let i = 0;
 		
 		do Screen.clearScreen();
-		
+		//do Draw.debug3(player.y());
+		//do Draw.debug4(r1, r2);
 		do player.update();
 		do score.render();
+		
 		
 		while(i < length_platforms) {
 			
@@ -80,17 +95,14 @@ class Game {
 		return;
 	}
 	
-	method boolean check_landing() {
+	method void check_landing() {
 		var int i, xPlat, yPlat, xPlay, yPlay;
 		var boolean can_land;
 		var Platform current;
 		
 		let i = 0;
 		let can_land = player.can_hit();
-		
-		/*if(~can_land) {
-			return;
-		}*/
+
 		
 		while(i < length_platforms) {
 			
@@ -99,27 +111,47 @@ class Game {
 			let yPlay = player.y();
 			let xPlat = current.x();
 			let yPlat = current.y();
+			//do Draw.debug(can_land);
 			
 			//  check if the player landed on the platform
 			// this is working great currently
-			if ((yPlay + 10) = (yPlat - 2)) {
-				if ((xPlay - 8) < (xPlat)) {
-					if ((xPlay + 8) > (xPlat)) {
-						if(~can_land){
-							return false;
-						}
-						do player.touched();
-						do score.increment_score();
+			/**
+			if ((yPlay + 11) > (yPlat - 2)) {
+				if ((yPlay + 7) < (yPlat + 2)) {
+					if ((xPlay - 9) < xPlat) {
+						if ((xPlay + 11) > xPlat) {
+							if(can_land) {
+								do player.touched();
+								do score.increment_score();
+							}
 						
+						}
 					}
 				}
-	
+			}*/
+			if ((yPlay + 10) = (yPlat)) {
+				//if ((yPlay + 7) < (yPlat + 2)) {
+					if ((xPlay - 9) < xPlat) {
+						if ((xPlay + 11) > xPlat) {
+							if(can_land) {
+								do player.touched();
+								do score.increment_score();
+								do create_platforms();
+							}
+						
+						}
+					}
+				//}
 			}
 			
 			let i = i + 1;
 		}
 		
-		return true;
+		if (player.is_dead()) {
+			let exit = true;
+		}
+		
+		return;
 	}
 	
 	method boolean run() {		
@@ -127,11 +159,12 @@ class Game {
 		while (~exit) {
 			do handle_input();
 			do advance();
-			let game_on = check_landing();
-			if (~game_on){
+			do check_landing();
+			if (exit){
+				do Draw.draw_final_score(score.get_score());
 				return false;
 			}
-			do Sys.wait(100);
+			do Sys.wait(70);
 			
 		}
 		

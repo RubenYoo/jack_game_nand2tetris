@@ -23,4 +23,8 @@ class Score {
 		let value = value + 1;
 		return;
 	}
+	
+	method int get_score() {
+		return value;
+	}
 }

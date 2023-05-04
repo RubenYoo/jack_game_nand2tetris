@@ -31,3 +31,8 @@ add
 pop this 0
 push constant 0
 return
+function Score.get_score 0
+push argument 0
+pop pointer 0
+push this 0
+return

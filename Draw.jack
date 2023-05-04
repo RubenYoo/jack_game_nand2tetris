@@ -49,4 +49,107 @@ class Draw {
 		do Output.printInt(val);
 		return;
 	}
+	
+	function void draw_final_score(int val) {
+		var String msg;
+		do Screen.clearScreen();
+		
+		do Output.moveCursor(5,25);
+		let msg = "GAME OVER !";
+		do Output.printString(msg);
+		
+		do Output.moveCursor(15,27);
+		let msg = "Score: ";
+		
+		do Output.printString(msg);
+		do Output.printInt(val);
+		do msg.dispose();
+		return;
+	}
+	
+	function void debug(boolean d) {
+		var String s;
+		var String msg;
+		
+		do Output.moveCursor(5,7);
+		let s = "        ";
+		do Output.printString(s);
+		do s.dispose();
+		
+		
+		if(d) {
+			let msg = "Debug: can land";
+		}
+		else {
+			let msg = "Debug: cannot land";
+		}
+		
+		do Output.moveCursor(5,1);
+		do Output.printString(msg);
+		do msg.dispose();
+		return;
+	}
+	
+	function void debug2(boolean d) {
+		var String s;
+		var String msg;
+		
+		do Output.moveCursor(10,7);
+		let s = "           ";
+		do Output.printString(s);
+		do s.dispose();
+		
+		
+		if(d) {
+			let msg = "Debug: touched";
+		}
+		else {
+			let msg = "Debug: not touched";
+		}
+		
+		do Output.moveCursor(10,1);
+		do Output.printString(msg);
+		do msg.dispose();
+		return;
+	}
+	
+	function void debug3(int yPos) {
+		var String s;
+		var String msg;
+		
+		do Output.moveCursor(5,1);
+		let s = "                ";
+		do Output.printString(s);
+		do s.dispose();
+		
+		do Output.moveCursor(5,1);
+		let msg = "Debug: yPos: ";
+
+		
+		do Output.printString(msg);
+		do Output.printInt(yPos);
+		do msg.dispose();
+		return;
+	}
+	
+		function void debug4(int r, int r2) {
+		var String s;
+		var String msg;
+		
+		do Output.moveCursor(5,1);
+		let s = "                ";
+		do Output.printString(s);
+		do s.dispose();
+		
+		do Output.moveCursor(5,1);
+		let msg = "Debug: Rand x,y: ";
+
+		do Output.printString(msg);
+		do Output.printInt(r);
+		let msg = ",";
+		do Output.printString(msg);
+		do Output.printInt(r2);
+		do msg.dispose();
+		return;
+	}
 }

@@ -6,6 +6,8 @@ class Player {
 	field boolean gravity; 
 	field boolean on_jump;
 	field boolean touched;
+	field int counter;
+	field boolean dead;
 
 	constructor Player new(int x, int y) {
 		let xPos = x;
@@ -14,6 +16,8 @@ class Player {
 		let gravity = true;
 		let on_jump = false;
 		let touched = false;
+		let dead = false;
+		let counter = (yVel * 10);
 		return this;
     }
 
@@ -23,43 +27,61 @@ class Player {
     }
 
 	method void move_left() {
-		if(xPos > 0) {
+		if(xPos > (yVel + 5)) {
 			let xPos = xPos - 5;
 		}
 		return;
     }
 	
 	method void move_right() {
-		if(xPos < 512) {
+		if(xPos < (512 - yVel - 5)) {
 			let xPos = xPos + 5;
 		}
 		return;
     }
 	
-	method void jump() {
-		if(xPos < 512) {
-			let xPos = xPos + 1;
-		}
-		return;
-    }
 
 	method void movement() {
 		//check if should jump on
+		
 		if(touched){
-			let on_jump = ~on_jump;
-			let touched = false;
+			
+			if(counter < 0) {
+				let counter = (yVel * 10);
+				let touched = false;
+				let on_jump = false;
+				//do Draw.debug2(false);
+				return;
+			}
+			
+			if(yPos < (yVel + 10)) {
+				let counter = (yVel * 10);
+				let touched = false;
+				let on_jump = false;
+				//do Draw.debug2(false);
+				return;
+			}
+			
+			let on_jump = true;
+			let yPos = yPos - yVel;
+			let counter = counter - yVel;
+			
+			return;
 		}
-
+		
+		
 		if (~on_jump ) {
 			if (yPos < (256 - 10 - yVel)) {
                let yPos = yPos + yVel;
             }
 			else {
+				let dead = true;
 				let on_jump = true;
 			}
         } 
+		
 		else {
-			if (yPos > 100) {
+			if (yPos > 128) {
                let yPos = yPos - yVel;
             }
 			else {
@@ -72,7 +94,6 @@ class Player {
 	
 	method void render() {
 		do Draw.draw_player(xPos, yPos);
-
 		return;
 	}
 
@@ -90,11 +111,17 @@ class Player {
 		return yPos;
 	}
 	
+	method boolean is_dead() {
+		return dead;
+	}
+	
 	method boolean can_hit() {
 		return ~on_jump;
 	}
+	
 	method void touched() {
 		let touched = true;
+		//do Draw.debug2(true);
 		return;
 	}
 }
