@@ -113,35 +113,18 @@ class Game {
 			let yPlat = current.y();
 			//do Draw.debug(can_land);
 			
-			//  check if the player landed on the platform
-			// this is working great currently
-			/**
-			if ((yPlay + 11) > (yPlat - 2)) {
-				if ((yPlay + 7) < (yPlat + 2)) {
-					if ((xPlay - 9) < xPlat) {
-						if ((xPlay + 11) > xPlat) {
-							if(can_land) {
-								do player.touched();
-								do score.increment_score();
-							}
-						
+
+			if ((yPlay + 10) = (yPlat)) {
+				if ((xPlay - 9) < xPlat) {
+					if ((xPlay + 11) > xPlat) {
+						if(can_land) {
+							do player.touched();
+							do score.increment_score();
+							do create_platforms();
 						}
+						
 					}
 				}
-			}*/
-			if ((yPlay + 10) = (yPlat)) {
-				//if ((yPlay + 7) < (yPlat + 2)) {
-					if ((xPlay - 9) < xPlat) {
-						if ((xPlay + 11) > xPlat) {
-							if(can_land) {
-								do player.touched();
-								do score.increment_score();
-								do create_platforms();
-							}
-						
-						}
-					}
-				//}
 			}
 			
 			let i = i + 1;
